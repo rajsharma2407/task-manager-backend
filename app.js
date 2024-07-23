@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 require('dotenv').config();
 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: process.env.ORIGIN,
   credentials: true
 }));
 
@@ -26,6 +26,6 @@ mongoose.connect(process.env.MONGO_DB_URI)
   .then(() => console.log('MongoDB connected'))
   .catch(err => console.error('MongoDB connection error:', err));
 
-app.listen(8080, () => {
+app.listen((process.env.PORT || 8080), () => {
   console.log('Server is running on port 8080');
 });
