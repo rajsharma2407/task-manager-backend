@@ -7,6 +7,9 @@ const TaskGroup = require('../models/TaskGroup');
 router.post('/', async (req, res) => {
   try {
     const task = new Task(req.body);
+    task.column='todo'
+    task.createdByUserId="1";
+    task.taskGroupId="1";
     await task.save();
     res.status(201).json(task);
   } catch (error) {
