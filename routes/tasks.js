@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const Task = require('../models/Task');
-const TaskGroup = require('../models/TaskGroup')
+const TaskGroup = require('../models/TaskGroup');
 
 // Create a new task
 router.post('/', async (req, res) => {
@@ -26,16 +26,16 @@ router.get('/', async (req, res) => {
 
 router.get('/group-id/:taskGroupId', async (req, res) => {
   try {
-      const { taskGroupId } = req.params;
-      const tasks = await Task.find({ taskGroupId });
+    const { taskGroupId } = req.params;
+    const tasks = await Task.find({ taskGroupId });
 
-      if (!tasks.length) {
-          return res.status(404).json({ message: 'No tasks found for this task group' });
-      }
+    if (!tasks.length) {
+      return res.status(404).json({ message: 'No tasks found for this task group' });
+    }
 
-      res.status(200).json(tasks);
+    res.status(200).json(tasks);
   } catch (error) {
-      res.status(500).json({ message: 'Server error', error });
+    res.status(500).json({ message: 'Server error', error });
   }
 });
 
@@ -55,7 +55,7 @@ router.get('/:id', async (req, res) => {
 // Update a task by ID
 router.put('/:id', async (req, res) => {
   try {
-    const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const task = await Task.findOneAndUpdate({ taskId: req.params.id }, req.body, { new: true });
     if (!task) {
       return res.status(404).json({ message: 'Task not found' });
     }
@@ -79,7 +79,7 @@ router.delete('/:id', async (req, res) => {
 });
 
 // Create a new task group
-router.post('/', async (req, res) => {
+router.post('/group', async (req, res) => {
   try {
     const taskGroup = new TaskGroup(req.body);
     await taskGroup.save();
@@ -90,7 +90,7 @@ router.post('/', async (req, res) => {
 });
 
 // Read all task groups
-router.get('/', async (req, res) => {
+router.get('/group', async (req, res) => {
   try {
     const taskGroups = await TaskGroup.find();
     res.json(taskGroups);
